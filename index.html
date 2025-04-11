@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexandre Tro | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0a192f;
+            color: #8892b0;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #64ffda;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        /* Secciones */
+        section {
+            padding: 6rem 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        /* About Me */
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            grid-template-columns: 3fr 2fr;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            position: relative;
+        }
+
+        .about-images img {
+            width: 100%;
+            border-radius: 4px;
+            transition: transform 0.3s;
+        }
+
+        .main-img {
+            grid-column: 1 / 3;
+        }
+
+        /* Skills Mejorado */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skill-item {
+            background: #112240;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #233554;
+            transition: transform 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-item h3 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+        }
+
+        /* Proyectos */
+        .projects-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .carousel {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-tabs {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .project-tab {
+            cursor: pointer;
+            padding: 0.5rem;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: 0.3s;
+            width: 150px;
+            height: 100px;
+            overflow: hidden;
+        }
+
+        .project-tab img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-tab.active {
+            border-color: #64ffda;
+        }
+
+        .project-content {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .project-content.active {
+            display: grid;
+        }
+
+        /* Contacto Centrado */
+        .contact-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: #64ffda;
+            font-size: 1.5rem;
+            transition: 0.3s;
+            padding: 1rem;
+            border: 1px solid #64ffda;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-links a:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        /* Estilos Comunes */
+        h1, h2 {
+            color: #ccd6f6;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .accent {
+            color: #64ffda;
+        }
+
+        .highlight {
+            color: #fff;
+        }
+
+        /* Itch.io */
+        .itchio-profile {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-left: 2px solid #64ffda;
+        }
+
+        .itchio-link {
+            color: #64ffda;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+            padding: 0.5rem 1rem;
+            border: 1px solid #64ffda;
+            border-radius: 4px;
+        }
+
+        .itchio-link:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: translateX(5px);
+        }
+
+        /* Nuevos estilos agregados */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid #64ffda;
+            overflow: hidden;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            color: #ccd6f6;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-subtitle {
+            color: #64ffda;
+            font-size: 1.2rem;
+        }
+
+
+
+        .about-section {
+            background: #112240;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .tech-category {
+            margin-bottom: 2rem;
+        }
+
+        .tech-category h3 {
+            color: #64ffda;
+            border-bottom: 2px solid #233554;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .level-indicator {
+            display: inline-block;
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+            color: #8892b0;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .carousel-track {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .project-item {
+        position: absolute;
+        transition: all 0.5s ease-in-out;
+        opacity: 0;
+        width: 35%;
+        transform: scale(0.8);
+    }
+
+        .project-item.active {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            width: 80%;
+            z-index: 2;
+            position: relative;
+        }
+
+        .project-item.prev {
+            opacity: 0.6;
+            transform: scale(0.8) translateX(-180%);
+            z-index: 1;
+        }
+
+        .project-item.next {
+            opacity: 0.6;
+            transform: scale(0.8) translateX(180%);
+            z-index: 1;
+        }
+
+        .project-item.neighbor {
+            opacity: 0.6;
+            transform: scale(0.9);
+        }
+
+        .project-cover {
+            width: 100%;
+            height: 300px; 
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .project-details {
+            text-align: center;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .project-item.active .project-details {
+            opacity: 1;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10, 25, 47, 0.8);
+            border: none;
+            color: #64ffda;
+            padding: 1rem;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        .carousel-nav.prev {
+            left: 0;
+        }
+
+        .carousel-nav.next {
+            right: 0;
+        }
+
+
+        .about-sections {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .about-section {
+            margin-bottom: 3rem;
+            padding: 1rem;
+            background: none;
+            border: none;
+        }
+
+        .about-section h3 {
+            color: #64ffda;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #233554;
+            padding-bottom: 0.5rem;
+        }
+
+        .tech-section {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tech-category {
+            margin-bottom: 3rem;
+        }
+
+        .tech-category h3 {
+            color: #64ffda;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-box {
+            background: #112240;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #233554;
+            margin-bottom: 2rem;
+        }
+
+        .project-details {
+            background: #112240;
+            padding: 2rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+
+        .project-details h3 {
+            color: #64ffda;
+            margin: 1rem 0;
+        }
+
+        .about-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: #64ffda;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #233554;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bio-content {
+            background: #112240;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #233554;
+        }
+
+        .highlight-text {
+            color: #ccd6f6;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            border-left: 3px solid #64ffda;
+        }
+
+        .bio-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #0a192f;
+            border-radius: 6px;
+            transition: transform 0.3s;
+        }
+
+        .bio-section:hover {
+            transform: translateX(10px);
+        }
+
+        .bio-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .bio-header h4 {
+            color: #64ffda;
+            font-size: 1.2rem;
+            margin: 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .icon-accent {
+            color: #64ffda;
+            font-size: 1.2rem;
+        }
+
+        .bio-text {
+            color: #8892b0;
+            line-height: 1.7;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .experience-list {
+            list-style: none;
+            padding-left: 1.5rem;
+        }
+
+        .experience-list li {
+            position: relative;
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+        }
+
+        .experience-list li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            color: #64ffda;
+        }
+
+        .contact-info {
+    margin-top: 2rem;
+}
+
+.contact-info p {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.contact-info i {
+    width: 25px;
+    text-align: center;
+}
+
+
+.about-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .bio-content {
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
+        background: #112240;
+        padding: 2rem;
+        border-radius: 8px;
+        border: 1px solid #233554;
+        align-items: center;
+        justify-content: center;
+    }
+
+    section {
+        padding: 6rem 2rem;
+        min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+        display: flex;
+        align-items: center; /* Centrado vertical */
+        justify-content: center; /* Añade esto para centrado horizontal */
+    }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#tecnologias">Tecnologías</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="about">
+        <div class="about-container">
+            <div class="about-text">
+                <div class="profile-header">
+                    <div class="profile-photo">
+                        <img src="img/a1.png" alt="Alexandre Tro">
+                    </div>
+                    <div class="profile-info">
+                        <h1 class="profile-name">Alexandre Tro Arribas</h1>
+                        <p class="profile-subtitle">Programador de Videojuegos</p>
+                    </div>
+                </div>
+
+                <div class="about-sections">
+                    <h3 class="section-title">Biografía</h3>
+
+                    <div class="about-section">
+                        
+                        <div class="bio-content">
+                            <p class="highlight-text">Desarrollador de videojuegos valenciano con pasión por la programación y los videojuegos.</p>
+                            
+                            <div class="bio-section">
+                                <div class="bio-header">
+                                    
+                                    <h4> <i class="fas fa-user-alt icon-accent"></i>  Personalidad</h4>
+                                </div>
+                                <p class="bio-text">Soy una persona carismática y simpática con aptitudes de liderazgo y responsabilidad.</p>
+                            </div>
+                
+                            <div class="bio-section">
+                                <div class="bio-header">
+                                    
+                                    <h4> <i class="fas fa-briefcase icon-accent"></i>  Experiencia Laboral</h4>
+                                </div>
+                                
+                                    <p>Ayudante en tienda</p>
+                                    <p>Cuidador de niños</p>
+                                    <p>Camarero (3 años de experiencia)</p>
+                                
+                            </div>
+                
+                            <div class="bio-section">
+                                <div class="bio-header">
+                                    
+                                    <h4><i class="fas fa-rocket icon-accent"></i>  Objetivos Profesionales</h4>
+                                </div>
+                                <p class="bio-text">Busco oportunidades en programación para crecer profesionalmente mientras continúo mi formación académica, manteniendo siempre un equilibrio entre desarrollo personal y laboral.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="itchio-profile">
+                    <h3>Mis Juegos Publicados</h3>
+                    <a href="https://kuronokaminari.itch.io/" target="_blank" class="itchio-link">
+                        <i class="fab fa-itch-io"></i> Portfolio en itch.io
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Tecnologías modificada -->
+    <section id="tecnologias">
+        <div class="tech-section">
+            <h3 class="section-title">Tecnologías</h3>
+            
+            <div class="tech-category">
+                <h2>Lenguajes de Programación</h2>
+                <div class="tech-box">
+                    <ul>
+                        <li>C <span class="level-indicator">(Avanzado)</span></li>
+                        <li>C++ <span class="level-indicator">(Avanzado)</span></li>
+                        <li>SQL <span class="level-indicator">(Avanzado)</span></li>
+                        <li>HTML <span class="level-indicator">(Intermedio)</span></li>
+                        <li>Bash <span class="level-indicator">(Intermedio)</span></li>
+                        <li>C# <span class="level-indicator">(Intermedio)</span></li>
+                        <li>Assembling <span class="level-indicator">(Intermedio)</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tech-category">
+                <h2>Motores de Videojuegos</h2>
+                <div class="tech-box">
+                    <ul>
+                        <li>Unity Engine</li>
+                        <li>Unreal Engine</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tech-category">
+                <h2>Herramientas</h2>
+                <div class="tech-box">
+                    <ul>
+                        <li>Visual Studio</li>
+                        <li>SQLite</li>
+                        <li>MariaDB</li>
+                        <li>Perforce</li>
+                        <li>GitHub</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tech-category">
+                <h2>Idiomas</h2>
+                <div class="tech-box">
+                    <ul>
+                        <li>Español <span class="level-indicator">(Nativo)</span></li>
+                        <li>Valenciano <span class="level-indicator">(Nativo)</span></li>
+                        <li>Inglés <span class="level-indicator">(Avanzado)</span></li>
+                        <li>Japonés <span class="level-indicator">(Principiante)</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carrusel modificado -->
+    <section id="projects">
+        <div class="carousel-container">
+            <h3 class="section-title">Proyectos Destacados</h3>
+            <div class="carousel">
+                <button class="carousel-nav prev">❮</button>
+                <button class="carousel-nav next">❯</button>
+                
+                <div class="carousel-track">
+                    <!-- Proyecto 1 -->
+                    <div class="project-item active">
+                        <img src="img/ggj25.png" alt="Proyecto 1" class="project-cover">
+                        <div class="project-details">
+                            <h2>DUNGEONS AND BUBBLES</h2>
+                            <h3>Descripción</h3>
+                            <p>Juego desarrollado en 48 horas para la Global Game Jam 2025</p>
+                            <h3>Lenguaje</h3>
+                            <p>C</p>
+                            <h3>Motor</h3>
+                            <p>Unity</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Proyecto 2 -->
+                    <div class="project-item next">
+                        <img src="img/ggj25.png" alt="Proyecto 2" class="project-cover">
+                        <div class="project-details">
+                            <h3>Descripción</h3>
+                            <p>Juego desarrollado en 48 horas para la Global Game Jam 2025</p>
+                            <h3>Lenguaje</h3>
+                            <p>C</p>
+                            <h3>Motor</h3>
+                            <p>Unity</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Proyecto 3 -->
+                    <div class="project-item prev">
+                        <img src="img/ggj25.png" alt="Proyecto 3" class="project-cover">
+                        <div class="project-details">
+                            
+                            <h3>Descripción</h3>
+                            <p>Juego desarrollado en 48 horas para la Global Game Jam 2025</p>
+                            <h3>Lenguaje</h3>
+                            <p>C</p>
+                            <h3>Motor</h3>
+                            <p>Unity</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-container">
+            <h2>Contacto</h2>
+            <p class="highlight">¿Interesado en trabajar conmigo?</p>
+            <p>¡No dudes en contactarme!</p>
+            
+            <div class="social-links">
+                <a href="https://github.com/KuroNoKaminari" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/alexandre-tro-arribas-1a6b99349/" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://www.instagram.com/alex_tro_22/" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+            
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> alextroa22@gmail.com</p>
+                <p><i class="fas fa-phone-alt"></i> +34 622 785 244</p>
+                <p><i class="fas fa-map-marker-alt"></i> Alzira, Valencia</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script modificado para el carrusel -->
+    <script>
+        const projects = document.querySelectorAll('.project-item');
+    const prevBtn = document.querySelector('.carousel-nav.prev');
+    const nextBtn = document.querySelector('.carousel-nav.next');
+    let currentIndex = 0;
+
+    function updateCarousel() {
+        projects.forEach((project, index) => {
+            project.classList.remove('active', 'prev', 'next');
+            
+            if(index === currentIndex) {
+                project.classList.add('active');
+            } else if(index === (currentIndex - 1 + projects.length) % projects.length) {
+                project.classList.add('prev');
+            } else if(index === (currentIndex + 1) % projects.length) {
+                project.classList.add('next');
+            }
+        });
+    }
+
+    nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % projects.length;
+        updateCarousel();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + projects.length) % projects.length;
+        updateCarousel();
+    });
+
+    // Inicializar carrusel
+    updateCarousel();
+</script> 
+</body>
+</html>
