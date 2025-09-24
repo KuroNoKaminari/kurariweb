@@ -111,32 +111,71 @@
             overflow: hidden;
         }
 
-        .project-tabs {
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .carousel-track {
             display: flex;
-            gap: 1rem;
+            align-items: center;
             justify-content: center;
-            margin-bottom: 2rem;
+            min-height: 750px; /* Ajusta según necesites */
+            position: relative;
         }
 
-        .project-tab {
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(10, 25, 47, 0.8);
+            border: none;
+            color: #64ffda;
+            padding: 1rem;
             cursor: pointer;
-            padding: 0.5rem;
-            border: 2px solid transparent;
-            border-radius: 4px;
-            transition: 0.3s;
-            width: 150px;
-            height: 100px;
-            overflow: hidden;
+            z-index: 3;
         }
 
-        .project-tab img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .carousel-nav.prev {
+            left: 0;
         }
 
-        .project-tab.active {
-            border-color: #64ffda;
+        .carousel-nav.next {
+            right: 0;
+        }
+
+        .project-item {
+            position: absolute;
+            transition: all 0.5s ease-in-out;
+            opacity: 0;
+            width: 80%;
+            max-width: 900px;
+            min-height: 650px;
+            transform: translateX(-50%) scale(0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            top: 0;
+        }
+        .project-item.active {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+            z-index: 3;
+            position: relative;
+        }
+
+        .project-item.prev {
+            opacity: 0.6;
+            transform: scale(0.8) translateX(-100%);
+            z-index: 2;
+        }
+
+        .project-item.next {
+            opacity: 0.6;
+            transform: scale(0.8) translateX(100%);
+            z-index: 2;
         }
 
         .project-content {
@@ -257,14 +296,6 @@
             font-size: 1.2rem;
         }
 
-
-
-        .about-section {
-            background: #112240;
-            padding: 1.5rem;
-            border-radius: 8px;
-        }
-
         .tech-category {
             margin-bottom: 2rem;
         }
@@ -283,54 +314,6 @@
             color: #8892b0;
         }
 
-        .carousel-container {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 0;
-        }
-
-        .carousel-track {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 600px;
-            position: relative;
-        }
-
-        .project-item {
-        position: absolute;
-        transition: all 0.5s ease-in-out;
-        opacity: 0;
-        width: 35%;
-        transform: scale(0.8);
-    }
-
-        .project-item.active {
-            opacity: 1;
-            transform: scale(1) translateX(0);
-            width: 80%;
-            z-index: 2;
-            position: relative;
-        }
-
-        .project-item.prev {
-            opacity: 0.6;
-            transform: scale(0.8) translateX(-180%);
-            z-index: 1;
-        }
-
-        .project-item.next {
-            opacity: 0.6;
-            transform: scale(0.8) translateX(180%);
-            z-index: 1;
-        }
-
-        .project-item.neighbor {
-            opacity: 0.6;
-            transform: scale(0.9);
-        }
-
         .project-cover {
             width: 100%;
             height: 300px; 
@@ -339,39 +322,9 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .project-details {
-            text-align: center;
-            padding: 1.5rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-
         .project-item.active .project-details {
             opacity: 1;
         }
-
-        .carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(10, 25, 47, 0.8);
-            border: none;
-            color: #64ffda;
-            padding: 1rem;
-            cursor: pointer;
-            z-index: 3;
-        }
-
-        .carousel-nav.prev {
-            left: 0;
-        }
-
-        .carousel-nav.next {
-            right: 0;
-        }
-
 
         .about-sections {
             text-align: center;
@@ -384,15 +337,6 @@
             margin-bottom: 3rem;
             padding: 1rem;
             background: none;
-            border: none;
-        }
-
-        .about-section h3 {
-            color: #64ffda;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #233554;
-            padding-bottom: 0.5rem;
         }
 
         .tech-section {
@@ -423,6 +367,12 @@
             padding: 2rem;
             margin-top: 1rem;
             border-radius: 8px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center; 
+            text-align: center; 
         }
 
         .project-details h3 {
@@ -430,8 +380,22 @@
             margin: 1rem 0;
         }
 
-        .about-section {
-            margin-bottom: 3rem;
+        .view-more-btn {
+            margin-top: 1.5rem;
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #64ffda;
+            border-radius: 4px;
+            color: #64ffda;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .view-more-btn:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: translateY(-3px);
         }
 
         .section-title {
@@ -462,17 +426,6 @@
             transition: transform 0.3s;
         }
 
-        .bio-section:hover {
-            transform: translateX(10px);
-        }
-
-        .bio-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
         .bio-header h4 {
             color: #64ffda;
             font-size: 1.2rem;
@@ -491,24 +444,6 @@
             line-height: 1.7;
             margin: 0;
             font-size: 0.95rem;
-        }
-
-        .experience-list {
-            list-style: none;
-            padding-left: 1.5rem;
-        }
-
-        .experience-list li {
-            position: relative;
-            margin-bottom: 0.8rem;
-            padding-left: 1.5rem;
-        }
-
-        .experience-list li:before {
-            content: "";
-            position: absolute;
-            left: 0;
-            color: #64ffda;
         }
 
         .contact-info {
@@ -551,7 +486,7 @@
     <nav class="navbar">
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
-            <li><a href="#tecnologias">Tecnologías</a></li>
+            <li><a href="#tecnologias">Technologies</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -566,50 +501,50 @@
                     </div>
                     <div class="profile-info">
                         <h1 class="profile-name">Alexandre Tro Arribas</h1>
-                        <p class="profile-subtitle">Programador de Videojuegos</p>
+                        <p class="profile-subtitle">Video Game Programmer</p>
                     </div>
                 </div>
 
                 <div class="about-sections">
-                    <h3 class="section-title">Biografía</h3>
+                    <h3 class="section-title">Biography</h3>
 
                     <div class="about-section">
                         
                         <div class="bio-content">
-                            <p class="highlight-text">Programador de videojuegos con pasión por la programación y los videojuegos.</p>
+                            <p class="highlight-text">Video game programmer with a passion for programming and video games.</p>
                             
                             <div class="bio-section">
                                 <div class="bio-header">
                                     
-                                    <h4> <i class="fas fa-user-alt icon-accent"></i>  Personalidad</h4>
+                                    <h4> <i class="fas fa-user-alt icon-accent"></i>Personality</h4>
                                 </div>
-                                <p class="bio-text">Soy una persona carismática y simpática con aptitudes de liderazgo y responsabilidad.</p>
+                                <p class="bio-text">I am a charismatic and friendly person with leadership skills and a sense of responsibility. I enjoy socializing with colleagues and get along well with everyone..</p>
                             </div>
                 
                             <div class="bio-section">
                                 <div class="bio-header">
                                     
-                                    <h4> <i class="fas fa-briefcase icon-accent"></i>  Experiencia Laboral</h4>
+                                    <h4> <i class="fas fa-briefcase icon-accent"></i>Work Experience</h4>
                                 </div>
-                                    <p>Camarero por 3 años de experiencia (Encargado)</p>
+                                    <p>In order to pay for my studies, I worked as a waiter for three years. I have now been training as a programmer at ESAT for three years.</p>
                                 
                             </div>
                 
                             <div class="bio-section">
                                 <div class="bio-header">
                                     
-                                    <h4><i class="fas fa-rocket icon-accent"></i>  Objetivos Profesionales</h4>
+                                    <h4><i class="fas fa-rocket icon-accent"></i>Professional Objectives</h4>
                                 </div>
-                                <p class="bio-text">Busco oportunidades en programación para crecer profesionalmente mientras continúo mi formación académica, manteniendo siempre un equilibrio entre desarrollo personal y laboral.</p>
+                                <p class="bio-text">I am seeking opportunities in programming to grow professionally while continuing my academic training, always maintaining a balance between personal and professional development.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="itchio-profile">
-                    <h3>Mis Juegos Publicados</h3>
+                    <h3>My Published Games</h3>
                     <a href="https://kuronokaminari.itch.io/" target="_blank" class="itchio-link">
-                        <i class="fab fa-itch-io"></i> Ven a probar mis juegos
+                        <i class="fab fa-itch-io"></i> Come try my games on itchio
                     </a>
 
                 </div>
@@ -690,19 +625,16 @@
                             <h2>DUNGEONS AND BUBBLES</h2>
                             <h3>Descripción</h3>
                             <p>Juego desarrollado en 48 horas para la Global Game Jam 2025.</p>
-                            <p>Adentrate en esta mazmorra para recuperar 4 burbujas y así lograr que Neru pierda el miedo a ducharse.</p>                            
+                            <p>Adéntrate en esta mazmorra para recuperar 4 burbujas y así lograr que Neru pierda el miedo a ducharse.</p>                            
                             <h3>Lenguaje</h3>
                             <p>C#</p>
                             <h3>Motor</h3>
                             <p>Unity</p>
                             <br>
                             <div class="project-video">
-                                <iframe width="504" height="283" 
-                                    src="https://www.youtube.com/embed/iSl1OE3aOhQ?si=_NtBbIVjREh8LM1w" 
-                                    title="DUNGEONS AND BUBBLES" frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                    allowfullscreen></iframe>
-                          </div>
+                                <iframe width="504" height="283" src="https://www.youtube.com/embed/iSl1OE3aOhQ?si=_NtBbIVjREh8LM1w" title="DUNGEONS AND BUBBLES" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <a href="https://kuronokaminari.itch.io/" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
                         </div>
                     </div>
                     
@@ -720,81 +652,71 @@
                             <p>Unity</p>
                             <br>
                             <div class="project-video">
-                                <video width="800" height="450" controls>
+                                <video width="504" height="283" controls>
                                     <source src="img/KurenhaTrailer.mp4" type="video/mp4">
-                                    Tu navegador no soporta el elemento de video.
                                 </video>
                             </div>
+                            <a href="https://kuronokaminari.itch.io/" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
                         </div>
-
                     </div>
 
                     <!-- Proyecto 3 -->
-                    <div class="project-item active">
+                    <div class="project-item next">
                         <img src="img/cdtitle.png" alt="Proyecto 3" class="project-cover">
                         <div class="project-details">
                             <h2>Cube Dash</h2>
                             <h3>Descripción</h3>
-                            <p>Geometric Infinite Runner con tematica synthwave.</p>
-                            <p>¡Sumérgete en un trepidante Infinite Runner ambientado en un mundo neon donde tus reflejos y tu rapidez mental son la clave para sobrevivir! </p>                            
+                            <p>Geometric Infinite Runner con temática synthwave.</p>
+                            <p>¡Sumérgete en un trepidante Infinite Runner ambientado en un mundo neón donde tus reflejos y tu rapidez mental son la clave para sobrevivir!</p>                            
                             <h3>Lenguaje</h3>
                             <p>C#</p>
                             <h3>Motor</h3>
                             <p>Unity</p>
                             <br>
                             <div class="project-video">
-                                <iframe width="504" height="283" 
-                                    src="https://www.youtube.com/embed/kvZJ3OLCrmM?si=HRv3iBWv18JM4o9l" 
-                                    title="CUBE DASH" frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                    allowfullscreen></iframe>
-                          </div>
+                                <iframe width="504" height="283" src="https://www.youtube.com/embed/kvZJ3OLCrmM?si=HRv3iBWv18JM4o9l" title="CUBE DASH" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <a href="https://kuronokaminari.itch.io/" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
                         </div>
                     </div>
 
                     <!-- Proyecto 4 -->
-                    <div class="project-item active">
+                    <div class="project-item next">
                         <img src="img/miniatura.png" alt="Proyecto 4" class="project-cover">
                         <div class="project-details">
                             <h2>Procedural Forest</h2>
                             <h3>Descripción</h3>
                             <p>Procedural Forest using OpenGL.</p>
-                            <p>Proyecto gráfico en OpenGL que genera un bosque procedural con superficies de revolución, luces dinámicas, postprocesado cel shading e interfaz ImGui para editar, guardar y cargar escenas mediante base de datos. </p>                            
+                            <p>Proyecto gráfico en OpenGL que genera un bosque procedural con superficies de revolución, luces dinámicas, postprocesado cel shading e interfaz ImGui.</p>                            
                             <h3>Lenguaje</h3>
                             <p>C++</p>
-                            <h3>Libreria</h3>
+                            <h3>Librería</h3>
                             <p>OpenGL</p>
                             <br>
                             <div class="project-video">
-                                <iframe width="504" height="283" 
-                                    src="https://www.youtube.com/embed/uxjkgIhi1qc?si=LEdaM-kTG2qyIbmx" 
-                                    title="Procedural Forest" frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                    allowfullscreen></iframe>
-                          </div>
+                                <iframe width="504" height="283" src="https://www.youtube.com/embed/uxjkgIhi1qc?si=npyVzeuJ7TmZN8yv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            </div>
+                            <a href="https://kuronokaminari.itch.io/" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
                         </div>
                     </div>
 
-                     <!-- Proyecto 5 -->
-                    <div class="project-item active">
+                    <!-- Proyecto 5 -->
+                    <div class="project-item">
                         <img src="img/portadamuseo.png" alt="Proyecto 5" class="project-cover">
                         <div class="project-details">
                             <h2>Nintendo Museum</h2>
                             <h3>Descripción</h3>
                             <p>An interactive tour through the history of four Nintendo legends.</p>
-                            <p>Explore a 3D virtual museum, with rooms dedicated to Gunpei Yokoi, Shigeru Miyamoto, Satoru Iwata and Masahiro Sakurai. Music, atmosphere and narration accompany you in this educational and non-commercial project inspired by the real history of video games. </p>                            
+                            <p>Explore a 3D virtual museum, with rooms dedicated to Gunpei Yokoi, Shigeru Miyamoto, Satoru Iwata and Masahiro Sakurai.</p>                            
                             <h3>Lenguaje</h3>
                             <p>C#</p>
                             <h3>Motor</h3>
                             <p>Unity</p>
                             <br>
                             <div class="project-video">
-                                <iframe width="504" height="283" 
-                                    src="https://www.youtube.com/embed/_Qg73A3XkMo?si=zJFADy8nkJwK5wYG" 
-                                    title="Nintendo Museum" frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                    allowfullscreen></iframe>
-                          </div>
+                                <iframe width="504" height="283" src="https://www.youtube.com/embed/_Qg73A3XkMo?si=zJFADy8nkJwK5wYG" title="Nintendo Museum" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <a href="https://kuronokaminari.itch.io/" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
                         </div>
                     </div>
                     
@@ -831,7 +753,7 @@
 
     <!-- Script modificado para el carrusel -->
     <script>
-        const projects = document.querySelectorAll('.project-item');
+    const projects = document.querySelectorAll('.project-item');
     const prevBtn = document.querySelector('.carousel-nav.prev');
     const nextBtn = document.querySelector('.carousel-nav.next');
     let currentIndex = 0;
