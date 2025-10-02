@@ -122,7 +122,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%; /* Ajusta según necesites */
+            min-height: 750px;
             position: relative;
         }
         
@@ -146,14 +146,17 @@
             transition: all 0.5s ease-in-out;
             opacity: 0;
             width: 80%;
-            max-width: 900px;
+            max-width: 800px;
             height: 100%;
             transform: translateX(0%) scale(0.8);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             top: 0;
+            left: 0;
         }
+
+        
         .project-item.active {
             opacity: 1;
             transform: scale(1) translateX(0);
@@ -362,8 +365,10 @@
             padding: 2rem;
             margin-top: 1rem;
             border-radius: 8px;
+            max-height: 400px;
             flex-grow: 1;
             display: flex;
+            overflow-y: auto;
             flex-direction: column;
             justify-content: space-between;
             align-items: center; 
@@ -619,8 +624,9 @@
                         <div class="project-details">
                             <h2>DUNGEONS AND BUBBLES</h2>
                             <h3>Description</h3>
-                            <p>Game developed in 48 hours for the Global Game Jam 2025.</p>
-                            <p>Enter this dungeon to retrieve 4 bubbles and help Neru overcome his fear of showering.</p>                            
+                            <p>Game developed in 48 hours for the Global Game Jam 2025 with small team.</p>
+                            <p>Showering can be so much fun! Experience the fantasy of a little child who has to take a bath, and his father turns it into an adventure full of puzzles and fun.</p>
+                            <p>Make bath time an unforgettable game. Solve clever puzzles in a world full of imagination, where a father transforms the shower into a magical experience for his child.</p>                            
                             <h3>Language</h3>
                             <p>C#</p>
                             <h3>Engine</h3>
@@ -640,7 +646,8 @@
                             <h2>Kurenha</h2>
                             <h3>Description</h3>
                             <p>Bullet Hell roguelike game set in a pixelart dark medieval universe.</p>
-                            <p>The player controls a sorcerer who survives waves of demons and collects upgrades. You can obtain spellbooks, spells, ultimates, and more!</p>
+                            <p>Kurenha is an action game with bullet hell mechanics and roguelike elements.</p>
+                            <p>You play as a sorcerer trapped in a dungeon infested with demonic enemies. Your goal: survive endless waves of enemies and defeat two powerful bosses that will push your skills to the limit.</p>
                             <h3>Language</h3>
                             <p>C#</p>
                             <h3>Engine</h3>
