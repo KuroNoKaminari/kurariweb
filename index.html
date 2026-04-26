@@ -129,17 +129,23 @@
         .carousel-nav {
             position: absolute;
             top: 50%;
-            transform: translateY(-80%);
+            transform: translateY(-50%); 
             background: rgba(10, 25, 47, 0.8);
-            border: none;
+            border: 1px solid #64ffda; 
             color: #64ffda;
             padding: 1rem;
             cursor: pointer;
-            z-index: 3;
+            z-index: 10; 
+            border-radius: 50%; 
         }
-
-        .carousel-nav.prev { left: -5rem; }
-        .carousel-nav.next { right: -5rem; }
+        
+        .carousel-nav.prev { left: -4rem; }
+        .carousel-nav.next { right: -4rem; }
+        
+        @media (max-width: 1400px) {
+            .carousel-nav.prev { left: 0; }
+            .carousel-nav.next { right: 0; }
+        }
 
         .project-item {
             position: absolute;
