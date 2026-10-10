@@ -1,1489 +1,322 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0a192f">
-    <title>Alexandre Tro | Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* =========================================
-           VARIABLES Y BASE
-           ========================================= */
-        :root {
-            --bg: #0a192f;
-            --bg-soft: #0d1f3a;
-            --card: #112240;
-            --card-hover: #15294d;
-            --border: #233554;
-            --accent: #64ffda;
-            --accent-soft: rgba(100, 255, 218, 0.08);
-            --accent-mid: rgba(100, 255, 218, 0.18);
-            --text: #8892b0;
-            --text-hi: #ccd6f6;
-            --white: #e6f1ff;
-            --radius: 18px;
-            --nav-h: 64px;
-            --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: var(--nav-h);
-            -webkit-text-size-adjust: 100%;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Fondo decorativo fijo (funciona también en iOS) */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-            background:
-                radial-gradient(900px 600px at 0% -10%, rgba(100, 255, 218, 0.09), transparent 60%),
-                radial-gradient(700px 500px at 100% 30%, rgba(87, 113, 255, 0.08), transparent 60%),
-                radial-gradient(800px 600px at 50% 120%, rgba(100, 255, 218, 0.06), transparent 60%),
-                var(--bg);
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-            background-image:
-                linear-gradient(rgba(204, 214, 246, 0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(204, 214, 246, 0.025) 1px, transparent 1px);
-            background-size: 48px 48px;
-            mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
-            -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
-        }
-
-        img { max-width: 100%; display: block; }
-
-        a { -webkit-tap-highlight-color: transparent; }
-
-        ::selection {
-            background: var(--accent-mid);
-            color: var(--white);
-        }
-
-        h1, h2 {
-            color: var(--text-hi);
-            margin-bottom: 2rem;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        .accent { color: var(--accent); }
-        .highlight { color: #fff; }
-
-        section {
-            padding: clamp(5rem, 9vw, 7rem) clamp(1rem, 4vw, 2rem);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* =========================================
-           NAVBAR
-           ========================================= */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: var(--nav-h);
-            padding: 0 1rem;
-            padding-top: env(safe-area-inset-top);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(10, 25, 47, 0.7);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid transparent;
-            z-index: 1000;
-            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .navbar.scrolled {
-            background: rgba(10, 25, 47, 0.92);
-            border-bottom-color: var(--border);
-            box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: center;
-            gap: clamp(0.4rem, 3vw, 2.5rem);
-            list-style: none;
-        }
-
-        .nav-links a {
-            position: relative;
-            display: inline-block;
-            color: var(--text-hi);
-            text-decoration: none;
-            font-size: clamp(0.8rem, 2.4vw, 0.92rem);
-            font-weight: 500;
-            padding: 0.5rem 0.6rem;
-            transition: color 0.3s;
-        }
-
-        .nav-links a::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            bottom: 0.2rem;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            border-radius: 2px;
-            transform: translateX(-50%);
-            transition: width 0.3s var(--ease);
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--accent);
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 60%;
-        }
-
-        /* =========================================
-           TÍTULOS DE SECCIÓN
-           ========================================= */
-        .section-title {
-            color: var(--text-hi);
-            font-size: clamp(1.8rem, 5vw, 2.6rem);
-            font-weight: 700;
-            margin-bottom: clamp(2rem, 5vw, 3rem);
-            text-align: center;
-            position: relative;
-            padding-bottom: 1rem;
-        }
-
-        .section-title::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            width: 64px;
-            height: 3px;
-            border-radius: 3px;
-            transform: translateX(-50%);
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-        }
-
-        /* =========================================
-           ABOUT / HERO
-           ========================================= */
-        #about {
-            min-height: 100vh;
-            min-height: 100svh;
-            position: relative;
-        }
-
-        .about-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .about-text {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: clamp(1.5rem, 5vw, 3.5rem);
-            margin-bottom: clamp(2rem, 6vw, 3.5rem);
-        }
-
-        .profile-photo {
-            flex-shrink: 0;
-            width: clamp(150px, 32vw, 220px);
-            aspect-ratio: 1;
-            border-radius: 50%;
-            border: 3px solid var(--accent);
-            overflow: hidden;
-            box-shadow:
-                0 0 0 10px var(--accent-soft),
-                0 25px 60px -10px rgba(100, 255, 218, 0.25);
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .profile-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .profile-info { flex: 1; }
-
-        .profile-name {
-            color: var(--text-hi);
-            font-size: clamp(2rem, 6.5vw, 3.6rem);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-align: left;
-            letter-spacing: -0.02em;
-            background: linear-gradient(120deg, var(--white) 30%, var(--accent) 130%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .profile-subtitle {
-            color: var(--accent);
-            font-size: clamp(1rem, 2.8vw, 1.3rem);
-            font-weight: 500;
-            letter-spacing: 0.04em;
-        }
-
-        .itchio-profile {
-            background: rgba(17, 34, 64, 0.7);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--accent);
-            border-radius: 12px;
-            padding: 1.25rem 1.75rem;
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .itchio-profile h3 {
-            color: var(--text-hi);
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        .itchio-link {
-            color: var(--accent);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            transition: 0.3s var(--ease);
-            padding: 0.7rem 1.25rem;
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            min-height: 44px;
-        }
-
-        .itchio-link:hover {
-            background: var(--accent-soft);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px -10px rgba(100, 255, 218, 0.5);
-        }
-
-        .scroll-hint {
-            position: absolute;
-            bottom: clamp(1.25rem, 4vh, 2.5rem);
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--accent);
-            font-size: 1.1rem;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 1px solid var(--accent-mid);
-            text-decoration: none;
-            animation: bounce 2.2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translate(-50%, 0); }
-            50% { transform: translate(-50%, 8px); }
-        }
-
-        /* =========================================
-           PROYECTOS / CARRUSEL
-           ========================================= */
-        #projects {
-            overflow-x: hidden;
-            overflow-x: clip;
-        }
-
-        .carousel-container {
-            position: relative;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            container-type: inline-size;
-        }
-
-        .carousel {
-            position: relative;
-            /* Ancho de la tarjeta activa y centro vertical de su portada.
-               Solo dependen del ancho de pantalla, nunca del largo del texto. */
-            --card-w: min(780px, 100cqw);
-            --cover-h: calc(var(--card-w) * 0.5);
-            --details-pad: clamp(1.25rem, 4vw, 2.25rem);
-            /* Altura del título: portada + padding superior + media línea del título */
-            --nav-top: calc(var(--cover-h) + var(--details-pad) + 1.2rem);
-        }
-
-        .carousel-track {
-            position: relative;
-            touch-action: pan-y;
-        }
-
-        .project-item {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            width: var(--card-w);
-            display: flex;
-            flex-direction: column;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0.9);
-            transition:
-                transform 0.6s var(--ease),
-                opacity 0.45s ease,
-                visibility 0.6s,
-                box-shadow 0.4s;
-        }
-
-        .project-item.active {
-            position: relative;
-            opacity: 1;
-            visibility: visible;
-            transform: none;
-            z-index: 3;
-            border-color: rgba(100, 255, 218, 0.22);
-            box-shadow:
-                0 30px 60px -20px rgba(2, 12, 27, 0.9),
-                0 0 0 1px rgba(100, 255, 218, 0.05);
-        }
-
-        .project-item.prev,
-        .project-item.next {
-            visibility: visible;
-            opacity: 0.3;
-            z-index: 2;
-            cursor: pointer;
-        }
-
-        .project-item.prev { transform: translateX(-60%) scale(0.8); }
-        .project-item.next { transform: translateX(60%) scale(0.8); }
-
-        .project-item.prev:hover,
-        .project-item.next:hover { opacity: 0.5; }
-
-        .project-item:not(.active) > * { pointer-events: none; }
-
-        .project-cover {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 16 / 8;
-            object-fit: cover;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .project-details {
-            padding: var(--details-pad);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            scrollbar-width: thin;
-            scrollbar-color: var(--border) transparent;
-        }
-
-        .project-details::-webkit-scrollbar { width: 6px; }
-        .project-details::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 6px;
-        }
-
-        .project-details h2 {
-            color: var(--white);
-            font-size: clamp(1.35rem, 3.5vw, 1.85rem);
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .project-details h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            margin: 1.4rem 0 0.6rem;
-        }
-
-        .project-details h3::before,
-        .project-details h3::after {
-            content: "";
-            width: 22px;
-            height: 1px;
-            background: var(--accent-mid);
-        }
-
-        .project-details p {
-            max-width: 62ch;
-            font-size: 0.95rem;
-            line-height: 1.75;
-            margin-bottom: 0.35rem;
-        }
-
-        .project-details b { color: var(--text-hi); font-weight: 600; }
-
-        .project-details br { display: none; }
-
-        .project-video {
-            width: 100%;
-            margin-top: 1.5rem;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            background: #000;
-            box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.7);
-        }
-
-        .project-video iframe,
-        .project-video video {
-            display: block;
-            width: 100%;
-            height: auto;
-            aspect-ratio: 16 / 9;
-            border: 0;
-        }
-
-        .view-more-btn {
-            margin-top: 1.5rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.75rem 1.6rem;
-            min-height: 44px;
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s var(--ease);
-        }
-
-        .view-more-btn:hover {
-            background: var(--accent-soft);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px -10px rgba(100, 255, 218, 0.5);
-        }
-
-        /* Flechas fijas a los lados de la tarjeta activa,
-           a la altura del centro de la portada */
-        .carousel-nav {
-            position: absolute;
-            top: var(--nav-top);
-            transform: translateY(-50%);
-            z-index: 10;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: rgba(10, 25, 47, 0.85);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border: 1px solid var(--accent-mid);
-            color: var(--accent);
-            font-size: 1.05rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 25px -8px rgba(2, 12, 27, 0.9);
-            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-        }
-
-        /* Fuera de la tarjeta si hay hueco; si no, sobre el borde de la portada */
-        .carousel-nav.prev {
-            left: max(10px, calc(50% - var(--card-w) / 2 - 76px));
-        }
-
-        .carousel-nav.next {
-            right: max(10px, calc(50% - var(--card-w) / 2 - 76px));
-        }
-
-        .carousel-nav:hover {
-            background: rgba(17, 34, 64, 0.95);
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-soft), 0 10px 25px -8px rgba(2, 12, 27, 0.9);
-        }
-
-        .carousel-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .carousel-dots {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .carousel-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 999px;
-            border: 0;
-            padding: 0;
-            background: var(--border);
-            cursor: pointer;
-            transition: width 0.35s var(--ease), background 0.3s;
-            position: relative;
-        }
-
-        /* Zona táctil más grande sin cambiar el tamaño visual */
-        .carousel-dot::before {
-            content: "";
-            position: absolute;
-            inset: -8px -3px;
-        }
-
-        .carousel-dot:hover { background: var(--text); }
-
-        .carousel-dot.active {
-            width: 28px;
-            background: var(--accent);
-        }
-
-        .carousel-counter {
-            text-align: center;
-            margin-top: 0.9rem;
-            font-size: 0.8rem;
-            letter-spacing: 0.15em;
-            color: var(--text);
-        }
-
-        .carousel-counter span { color: var(--accent); font-weight: 600; }
-
-        /* =========================================
-           TECNOLOGÍAS
-           ========================================= */
-        .tech-section {
-            max-width: 1100px;
-            width: 100%;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-            gap: clamp(1rem, 3vw, 1.5rem);
-        }
-
-        .tech-section .section-title { grid-column: 1 / -1; }
-
-        .tech-category {
-            background: rgba(17, 34, 64, 0.75);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: clamp(1.25rem, 3.5vw, 2rem);
-            transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
-        }
-
-        .tech-category:hover {
-            transform: translateY(-5px);
-            border-color: rgba(100, 255, 218, 0.3);
-            box-shadow: 0 20px 40px -20px rgba(2, 12, 27, 0.9);
-        }
-
-        .tech-category h2 {
-            text-align: left;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1.1rem;
-            color: var(--text-hi);
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .tech-category h2::before {
-            content: "";
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 12px var(--accent);
-        }
-
-        .tech-box {
-            background: none;
-            padding: 0;
-            border: 0;
-            margin: 0;
-        }
-
-        .tech-box ul {
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-        }
-
-        .tech-box li {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.45rem 0.95rem;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            background: var(--accent-soft);
-            color: var(--text-hi);
-            font-size: 0.9rem;
-            transition: 0.25s;
-        }
-
-        .tech-box li:hover {
-            border-color: var(--accent);
-            color: var(--white);
-        }
-
-        .level-indicator {
-            display: inline-block;
-            margin-left: 0.4rem;
-            font-size: 0.75rem;
-            color: var(--accent);
-            opacity: 0.85;
-        }
-
-        .level-indicator:empty { display: none; }
-
-        /* =========================================
-           BIOGRAFÍA
-           ========================================= */
-        .about-sections {
-            padding: clamp(5rem, 9vw, 7rem) clamp(1rem, 4vw, 2rem);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .about-section {
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        .bio-content {
-            width: 100%;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-            gap: clamp(1rem, 3vw, 1.5rem);
-        }
-
-        .highlight-text {
-            grid-column: 1 / -1;
-            color: var(--text-hi);
-            font-size: clamp(1.05rem, 2.8vw, 1.3rem);
-            font-weight: 500;
-            line-height: 1.6;
-            padding: 1.25rem 1.5rem;
-            border-left: 3px solid var(--accent);
-            background: rgba(17, 34, 64, 0.6);
-            border-radius: 0 12px 12px 0;
-            text-align: left;
-        }
-
-        .bio-section {
-            background: rgba(17, 34, 64, 0.75);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: clamp(1.25rem, 3.5vw, 1.75rem);
-            transition: transform 0.35s var(--ease), border-color 0.35s;
-        }
-
-        .bio-section:hover {
-            transform: translateY(-5px);
-            border-color: rgba(100, 255, 218, 0.3);
-        }
-
-        .bio-header h4 {
-            color: var(--text-hi);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 0 0 0.9rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .icon-accent {
-            color: var(--accent);
-            font-size: 1.15rem;
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--accent-soft);
-            border: 1px solid var(--accent-mid);
-        }
-
-        .bio-section p,
-        .bio-text {
-            color: var(--text);
-            line-height: 1.75;
-            font-size: 0.95rem;
-        }
-
-        /* =========================================
-           CONTACTO
-           ========================================= */
-        .contact-container {
-            text-align: center;
-            max-width: 640px;
-            width: 100%;
-            margin: 0 auto;
-            background: rgba(17, 34, 64, 0.6);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: clamp(2rem, 6vw, 3.5rem) clamp(1.25rem, 5vw, 3rem);
-        }
-
-        .contact-container h2 {
-            font-size: clamp(1.8rem, 5vw, 2.6rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .contact-container > p.highlight {
-            font-size: clamp(1.05rem, 3vw, 1.25rem);
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: clamp(1rem, 4vw, 1.75rem);
-            margin: 2rem 0;
-        }
-
-        .social-links a {
-            color: var(--accent);
-            font-size: 1.35rem;
-            border: 1px solid var(--accent-mid);
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s var(--ease);
-        }
-
-        .social-links a:hover {
-            background: var(--accent-soft);
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 25px -10px rgba(100, 255, 218, 0.55);
-        }
-
-        .contact-info {
-            margin-top: 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .contact-info p {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.7rem;
-            font-size: 0.95rem;
-            word-break: break-word;
-        }
-
-        .contact-info i { color: var(--accent); width: 1rem; }
-
-        .contact-info a {
-            color: var(--text-hi);
-            text-decoration: none;
-            transition: color 0.25s;
-        }
-
-        .contact-info a:hover { color: var(--accent); }
-
-        /* =========================================
-           ANIMACIÓN DE APARICIÓN AL HACER SCROLL
-           ========================================= */
-        .js-reveal .reveal {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
-        }
-
-        .js-reveal .reveal.in {
-            opacity: 1;
-            transform: none;
-        }
-
-        /* =========================================
-           RESPONSIVE
-           ========================================= */
-
-        /* Tablet (iPad vertical y horizontal) y pantallas medianas */
-        @media (max-width: 1100px) {
-            .project-item.prev,
-            .project-item.next {
-                opacity: 0;
-                visibility: hidden;
-                transform: scale(0.92);
-            }
-
-            .carousel { --card-w: min(720px, 100cqw); }
-        }
-
-        /* Móvil */
-        @media (max-width: 700px) {
-            :root { --nav-h: 58px; }
-
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .profile-name,
-            .profile-subtitle { text-align: center; }
-
-            .itchio-profile {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-                padding: 1.25rem;
-                border-left: 1px solid var(--border);
-                border-top: 3px solid var(--accent);
-            }
-
-            .project-cover { aspect-ratio: 16 / 10; }
-
-            .carousel { --cover-h: calc(var(--card-w) * 0.625); }
-
-            .project-details p { font-size: 0.92rem; }
-
-            .carousel-nav {
-                width: 42px;
-                height: 42px;
-                font-size: 0.95rem;
-            }
-
-            .carousel-dots { gap: 0.4rem; }
-
-            .highlight-text {
-                text-align: center;
-                border-left: 0;
-                border-top: 3px solid var(--accent);
-                border-radius: 0 0 12px 12px;
-            }
-
-            .scroll-hint { display: none; }
-        }
-
-        /* Móviles muy estrechos */
-        @media (max-width: 380px) {
-            .nav-links a { padding: 0.5rem 0.35rem; }
-            .carousel-dot { width: 8px; height: 8px; }
-            .carousel-dot.active { width: 20px; }
-        }
-
-        /* Accesibilidad: menos movimiento */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation: none !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a192f">
+<title>Alexandre Tro | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--bg:#0a192f;--card:#112240;--border:#233554;--accent:#64ffda;--accent-soft:rgba(100,255,218,.08);--accent-mid:rgba(100,255,218,.2);--text:#8892b0;--hi:#ccd6f6;--white:#e6f1ff;--r:18px;--ease:cubic-bezier(.22,.61,.36,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 600px at 0 -10%,rgba(100,255,218,.1),transparent 60%),radial-gradient(700px 500px at 100% 40%,rgba(87,113,255,.09),transparent 60%),var(--bg)}
+body::after{content:"";position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(204,214,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(204,214,246,.03) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse at 50% 0,#000,transparent 70%);mask-image:radial-gradient(ellipse at 50% 0,#000,transparent 70%)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent-mid);color:var(--white)}
+section{max-width:1180px;margin:0 auto;padding:clamp(5rem,9vw,7rem) clamp(1rem,4vw,2rem)}
+.title{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:700;color:var(--hi);margin-bottom:clamp(2rem,5vw,3.25rem);display:flex;align-items:center;gap:1rem}
+.title span{color:var(--accent);font-size:.55em;font-weight:500;font-family:monospace}
+.title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1.4rem;min-height:44px;border:1px solid var(--accent);border-radius:10px;color:var(--accent);font-weight:600;font-size:.92rem;transition:.3s var(--ease)}
+.btn:hover{background:var(--accent-soft);transform:translateY(-3px);box-shadow:0 10px 25px -10px rgba(100,255,218,.5)}
+.btn.solid{background:var(--accent);color:var(--bg)}
+.btn.solid:hover{background:#7fffe2}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+.tags li{padding:.3rem .85rem;border-radius:999px;border:1px solid var(--border);background:var(--accent-soft);color:var(--hi);font-size:.8rem}
+
+nav{position:fixed;top:0;width:100%;height:64px;display:flex;align-items:center;justify-content:center;gap:clamp(.25rem,3vw,2.5rem);background:rgba(10,25,47,.75);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;z-index:100;transition:.3s}
+nav.scrolled{border-color:var(--border);box-shadow:0 10px 30px -10px rgba(2,12,27,.7)}
+nav a{color:var(--hi);font-size:clamp(.78rem,2.4vw,.92rem);font-weight:500;padding:.5rem;transition:color .3s}
+nav a:hover{color:var(--accent)}
+
+#about{min-height:100svh;display:flex;align-items:center;justify-content:center;gap:clamp(2rem,6vw,4.5rem)}
+.photo{flex-shrink:0;width:clamp(160px,30vw,260px);aspect-ratio:1;border-radius:50%;overflow:hidden;border:3px solid var(--accent);box-shadow:0 0 0 12px var(--accent-soft),0 25px 60px -10px rgba(100,255,218,.3);animation:float 6s ease-in-out infinite}
+.photo img{width:100%;height:100%;object-fit:cover}
+@keyframes float{50%{transform:translateY(-10px)}}
+.hello{color:var(--accent);font-family:monospace;font-size:1rem;margin-bottom:.5rem}
+h1{font-size:clamp(2.2rem,7vw,4.2rem);font-weight:800;line-height:1.1;letter-spacing:-.02em;background:linear-gradient(120deg,var(--white) 30%,var(--accent) 130%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.role{color:var(--hi);font-size:clamp(1.05rem,3vw,1.5rem);font-weight:600;margin:.4rem 0 1rem}
+.lead{max-width:52ch;margin-bottom:2rem}
+.cta{display:flex;flex-wrap:wrap;gap:1rem}
+
+.featured{display:grid;gap:clamp(2.5rem,6vw,4.5rem)}
+.feat{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(1.5rem,4vw,3rem);align-items:center}
+.feat:nth-child(even) .media{order:2}
+.media{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:#000;box-shadow:0 30px 60px -25px rgba(2,12,27,.9)}
+.media::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(100,255,218,.15);pointer-events:none}
+.media iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+.feat .cover{width:100%;aspect-ratio:16/8;object-fit:cover;border-radius:12px;margin-bottom:1.25rem;border:1px solid var(--border)}
+.num{color:var(--accent);font-family:monospace;font-size:.9rem;letter-spacing:.1em}
+.feat h3{color:var(--white);font-size:clamp(1.5rem,4vw,2.1rem);font-weight:700;line-height:1.2;margin:.3rem 0 .9rem}
+.feat p{margin-bottom:1rem}
+.feat b{color:var(--hi);font-weight:600}
+.points{list-style:none;margin-bottom:1.25rem}
+.points li{position:relative;padding-left:1.4rem;margin-bottom:.4rem;font-size:.93rem}
+.points li::before{content:"▹";position:absolute;left:0;color:var(--accent)}
+.feat .tags{margin-bottom:1.5rem}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:1.5rem}
+.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:.35s var(--ease)}
+.card:hover{transform:translateY(-6px);border-color:rgba(100,255,218,.35);box-shadow:0 25px 45px -20px rgba(2,12,27,.9)}
+.card .thumb{overflow:hidden;aspect-ratio:16/9}
+.card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.card:hover .thumb img{transform:scale(1.07)}
+.card .body{flex:1;display:flex;flex-direction:column;padding:1.4rem}
+.card h4{color:var(--white);font-size:1.15rem;font-weight:600;margin-bottom:.4rem}
+.card p{font-size:.9rem;margin-bottom:1rem;flex:1}
+.card .tags{margin-bottom:1.1rem}
+.links{display:flex;gap:1.25rem}
+.links a{display:inline-flex;align-items:center;gap:.45rem;color:var(--hi);font-size:.88rem;font-weight:500;transition:color .25s}
+.links a:hover{color:var(--accent)}
+
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:1.5rem}
+.box{background:rgba(17,34,64,.75);border:1px solid var(--border);border-radius:var(--r);padding:clamp(1.25rem,3.5vw,1.9rem);transition:.35s var(--ease)}
+.box:hover{transform:translateY(-5px);border-color:rgba(100,255,218,.3)}
+.box h4{display:flex;align-items:center;gap:.75rem;color:var(--hi);font-size:1.05rem;font-weight:600;margin-bottom:1.1rem}
+.box h4 i,.bio i{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-mid)}
+.tags small{color:var(--accent);margin-left:.3rem}
+
+.bio{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1.5rem}
+.bio p{font-size:.94rem}
+.bio .box h4{margin-bottom:.9rem}
+
+#contact{text-align:center}
+.contact{max-width:640px;margin:0 auto;background:rgba(17,34,64,.6);border:1px solid var(--border);border-radius:24px;padding:clamp(2rem,6vw,3.5rem) clamp(1.25rem,5vw,3rem)}
+.contact h2{color:var(--hi);font-size:clamp(1.8rem,5vw,2.6rem);margin-bottom:.75rem}
+.social{display:flex;justify-content:center;gap:1.25rem;margin:2rem 0}
+.social a{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--accent-mid);color:var(--accent);font-size:1.35rem;transition:.3s var(--ease)}
+.social a:hover{background:var(--accent-soft);border-color:var(--accent);transform:translateY(-4px)}
+.info{display:grid;gap:.6rem;justify-items:center;font-size:.95rem}
+.info i{color:var(--accent);margin-right:.6rem}
+.info a:hover{color:var(--accent)}
+footer{text-align:center;padding:2rem 1rem 3rem;font-size:.8rem;font-family:monospace}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:860px){
+.feat{grid-template-columns:1fr}
+.feat:nth-child(even) .media{order:0}
+}
+@media(max-width:700px){
+#about{flex-direction:column;text-align:center}
+.cta{justify-content:center}
+.lead{margin-inline:auto}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+</style>
 </head>
 <body>
-    <nav class="navbar">
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#tecnologias">Technologies</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <section id="about">
-        <div class="about-container">
-            <div class="about-text">
-                <div class="profile-header">
-                    <div class="profile-photo">
-                        <img src="img/MainPhoto.jpeg" alt="Alexandre Tro">
-                    </div>
-                    <div class="profile-info">
-                        <h1 class="profile-name">Alexandre Tro Arribas</h1>
-                        <p class="profile-subtitle">Video Game Programmer</p>
-                    </div>
-                </div>
-
-                <div class="itchio-profile">
-                    <h3>My Published Games</h3>
-                    <a href="https://kuronokaminari.itch.io/" target="_blank" class="itchio-link">
-                        <i class="fab fa-itch-io"></i> Come try my games on itchio
-                    </a>
-                </div>
-            </div>
-        </div>
-        <a href="#projects" class="scroll-hint" aria-label="Projects"><i class="fas fa-chevron-down"></i></a>
-    </section>
-
-    <!-- Carrusel -->
-    <section id="projects">
-        <div class="carousel-container">
-            <h3 class="section-title">Featured Projects</h3>
-            <div class="carousel">
-
-                <div class="carousel-track">
-                    <!-- Proyecto 1 -->
-                    <div class="project-item active">
-                        <img src="img/dadtitle.png" alt="Proyecto 1" class="project-cover">
-                        <div class="project-details">
-                            <h2>DUNGEONS AND BUBBLES</h2>
-                            <h3>Description</h3>
-                            <p>Game developed in 48 hours for the Global Game Jam 2025 with small team.</p>
-                            <p>Showering can be so much fun! Experience the fantasy of a little child who has to take a bath, and his father turns it into an adventure full of puzzles and fun.</p>
-                            <p>Make bath time an unforgettable game. Solve clever puzzles in a world full of imagination, where a father transforms the shower into a magical experience for his child.</p>
-                            <h3>Language</h3>
-                            <p>C#</p>
-                            <h3>Engine</h3>
-                            <p>Unity</p>
-                            <br>
-                            <div class="project-video">
-                                <iframe width="504" height="283" src="https://www.youtube.com/embed/iSl1OE3aOhQ?si=_NtBbIVjREh8LM1w" title="DUNGEONS AND BUBBLES" frameborder="0" allowfullscreen></iframe>
-                            </div>
-                            <a href="https://tatiananav.itch.io/dungeons-and-bubbles" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 2 -->
-                    <div class="project-item">
-                        <img src="img/KurenhaTitle.png" alt="Proyecto 2" class="project-cover">
-                        <div class="project-details">
-                            <h2>Kurenha</h2>
-                            <h3>Description</h3>
-                            <p>Bullet Hell roguelike game set in a pixelart dark medieval universe.</p>
-                            <p>Kurenha is an action game with bullet hell mechanics and roguelike elements.</p>
-                            <p>You play as a sorcerer trapped in a dungeon infested with demonic enemies. Your goal: survive endless waves of enemies and defeat two powerful bosses that will push your skills to the limit.</p>
-                            <h3>Language</h3>
-                            <p>C#</p>
-                            <h3>Engine</h3>
-                            <p>Unity</p>
-                            <br>
-                            <div class="project-video">
-                                <video width="600" height="300" controls preload="metadata" playsinline>
-                                    <source src="img/KurenhaTrailer.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <a href="https://play.google.com/store/apps/details?id=com.ESAT.KURENHA&hl=es_419" target="_blank" class="view-more-btn"><i class="fab fa-google-play"></i> View more</a>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 3 -->
-                    <div class="project-item">
-                        <img src="img/cdtitle.png" alt="Proyecto 3" class="project-cover">
-                        <div class="project-details">
-                            <h2>Cube Dash</h2>
-                            <h3>Description</h3>
-                            <p>Synthwave-themed geometric infinite runner.</p>
-                            <p>Immerse yourself in a fast-paced Infinite Runner set in a neon world where your reflexes and quick thinking are the key to survival!</p>
-                            <h3>Language</h3>
-                            <p>C#</p>
-                            <h3>Engine</h3>
-                            <p>Unity</p>
-                            <br>
-                            <div class="project-video">
-                                <iframe width="504" height="283" src="https://www.youtube.com/embed/kvZJ3OLCrmM?si=HRv3iBWv18JM4o9l" title="CUBE DASH" frameborder="0" allowfullscreen></iframe>
-                            </div>
-                            <a href="https://kuronokaminari.itch.io/cubedash" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 4 -->
-                    <div class="project-item">
-                        <img src="img/miniatura.png" alt="Proyecto 4" class="project-cover">
-                        <div class="project-details">
-                            <h2>Procedural Forest</h2>
-                            <h3>Description</h3>
-                            <p>Procedural Forest using OpenGL.</p>
-                            <p>Graphics project in OpenGL that generates a procedural forest with surfaces of revolution, dynamic lighting, cel shading post-processing, and ImGui interface.</p>
-                            <h3>Language</h3>
-                            <p>C++</p>
-                            <h3>Library</h3>
-                            <p>OpenGL</p>
-                            <br>
-                            <div class="project-video">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/uxjkgIhi1qc?si=D6zqn7uXIUVGwgwj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 5 -->
-                    <div class="project-item">
-                        <img src="img/portadamuseo.png" alt="Proyecto 5" class="project-cover">
-                        <div class="project-details">
-                            <h2>Nintendo Museum</h2>
-                            <h3>Description</h3>
-                            <p>An interactive tour through the history of four Nintendo legends.</p>
-                            <p>Explore a 3D virtual museum, with rooms dedicated to Gunpei Yokoi, Shigeru Miyamoto, Satoru Iwata and Masahiro Sakurai.</p>
-                            <h3>Language</h3>
-                            <p>C#</p>
-                            <h3>Engine</h3>
-                            <p>Unity</p>
-                            <br>
-                            <div class="project-video">
-                                <iframe width="504" height="283" src="https://www.youtube.com/embed/_Qg73A3XkMo?si=zJFADy8nkJwK5wYG" title="Nintendo Museum" frameborder="0" allowfullscreen></iframe>
-                            </div>
-                            <a href="https://kuronokaminari.itch.io/nintendo-museum" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 6 -->
-                    <div class="project-item">
-                        <img src="img/ShadowSplash.png" alt="Shadow Sword" class="project-cover">
-                        <div class="project-details">
-                            <h2>SHADOW SWORD</h2>
-                            <h3>Description</h3>
-                            <p>An atmospheric 2D Pixel Art Idle Clicker where you embody a legendary Shadow Samurai.</p>
-                            <p>Battle through endless waves of dark creatures and epic bosses across two mystical worlds. Master legendary skills and manage your resources to grow stronger with every strike.</p>
-                            <p>Features a classic Prestige system, a specialized upgrade shop, and addictive progression mechanics designed for infinite gameplay loop using only mouse controls.</p>
-                            <h3>Language</h3>
-                            <p>C#</p>
-                            <h3>Engine</h3>
-                            <p>Unity</p>
-                            <br>
-                            <div class="project-video">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/ZM3Py_xxY2M?si=zjHfahShVL2012le" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                            </div>
-                            <a href="https://kuronokaminari.itch.io/shadow-sword" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 7 -->
-                    <div class="project-item">
-                        <img src="img/portada_spider.png" alt="Ethereal Embers: The Silk Mother’s Grotto" class="project-cover">
-                        <div class="project-details">
-                            <h2>Ethereal Embers: The Silk Mother’s Grotto</h2>
-
-                            <h3>Description</h3>
-                            <p>A low-gravity dungeon crawler where you must master arcane fire to survive.</p>
-                            <p>Explore a mystical cave with physics-defying movement and face <b>Silk Mother</b>, a colossal boss with a dynamic 3-phase AI system (Harassment, Healing, and Frenzy).</p>
-
-                            <h3>Key Systems (Plugins)</h3>
-                            <p>Developed with a modular architecture using C++ Plugins: a Stack-based <b>Menu Manager</b> and a <b>Damage Feedback System</b> with floating text and material effects.</p>
-
-                            <h3>Language</h3>
-                            <p>C++</p>
-
-                            <h3>Engine</h3>
-                            <p>Unreal Engine</p>
-
-                            <br>
-
-                            <div class="project-video">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/ikOEDquEDrQ?si=CHM6r3qAR4v9hpuy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                            </div>
-                            <a href="https://kuronokaminari.itch.io/ethereal-embers" target="_blank" class="view-more-btn"><i class="fab fa-itch-io"></i> View more</a>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 8 -->
-                    <div class="project-item">
-                        <img src="img/AC_Portada.png" alt="AutomataCelular" class="project-cover">
-                        <div class="project-details">
-                            <h2>Humanoid Locomotion via AI</h2>
-
-                            <h3>Description</h3>
-                            <p>An autonomous humanoid locomotion system in Unity using active physics and reinforcement learning.</p>
-                            <p>After training multiple models in parallel for hours, the agents learned on their own to balance, walk, and navigate around obstacles to reach a red target sphere</p>
-
-                            <h3>Language</h3>
-                            <p>C#</p>
-
-                            <h3>Engine</h3>
-                            <p>Unity</p>
-
-                            <h3>Tools</h3>
-                            <p>ML-Agents Toolkit</p>
-                            <p>Configurable Joints</p>
-                            <br>
-
-                            <div class="project-video">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/vXak4CAlLq8?si=xQXSZI9o8xNtJmdU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 9 -->
-                    <div class="project-item">
-                        <img src="img/Beerserker.jpg" alt="Beerserker" class="project-cover">
-                        <div class="project-details">
-                            <h2>Beerserker: The Stolen Brew</h2>
-
-                            <h3>Description</h3>
-                            <p>Beerserker is a modern fast-paced arcade game and comical twist.</p>
-                            <p>Blinded by the legendary dwarven ale’s taste, Ragna aims to retrieve this masterpiece from the grasp of the gods. Will you be able to make your way through a crowded dwarven brewery? Or end up crushed by their ranks?</p>
-
-                            <h3>Language</h3>
-                            <p>C++</p>
-
-                            <h3>Engine</h3>
-                            <p>Unreal Engine</p>
-                            <br>
-
-                            <div class="project-video">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/2bR2OxafTjQ?si=d486HXuEqqmfcb_A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                            </div>
-                            <a href="https://store.steampowered.com/app/4522440/Beerserker_The_Stolen_Brew/" target="_blank" class="view-more-btn"><i class="fab fa-steam"></i> View more</a>
-                        </div>
-                    </div>
-
-                    <!-- Proyecto 10 -->
-                    <div class="project-item">
-                        <img src="img/Trodo.jpg" alt="Trodo Engine" class="project-cover">
-                        <div class="project-details">
-                            <h2>Trodo Engine</h2>
-
-                            <h3>Description</h3>
-                            <p>A custom graphics engine built from scratch in C++ and OpenGL.</p>
-                            <p>Rendering, data architecture, physics, scripting and networking, all designed and implemented at a low level without relying on an existing engine. Includes a Unity/Unreal-style editor with Hierarchy, Inspector, Content Browser and a real-time Viewport with transform gizmos.</p>
-
-                            <h3>Key Systems</h3>
-                            <p><b>Archetype-based ECS</b> (DOTS-style) for high-performance data layout.</p>
-                            <p><b>Deferred + Forward</b> rendering pipeline with PBR, dynamic shadows and editable HDRI Skybox.</p>
-                            <p><b>Node-based Material Editor</b>, inspired by Unreal Engine 5.</p>
-                            <p><b>C# scripting</b> via Mono with hot-reload.</p>
-                            <p><b>Custom physics engine</b>: rigidbodies, box/sphere/capsule colliders and triggers with C# events.</p>
-                            <p><b>Native client-server networking</b>, showcased in a multiplayer Slither.io-style demo with live leaderboard and in-game chat.</p>
-
-                            <h3>Language</h3>
-                            <p>C++</p>
-
-                            <h3>Library</h3>
-                            <p>OpenGL</p>
-
-                            <h3>Tools</h3>
-                            <p>Mono</p>
-                            <br>
-
-                            <div class="project-video">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/y-EnX6kPlxw?si=TAiWQHjs-i9s8d2p" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="carousel-nav prev" aria-label="Previous">❮</button>
-                <button class="carousel-nav next" aria-label="Next">❯</button>
-
-                <div class="carousel-controls">
-                    <div class="carousel-dots"></div>
-                </div>
-                <div class="carousel-counter"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección Tecnologías -->
-    <section id="tecnologias">
-        <div class="tech-section">
-            <h3 class="section-title">Technologies</h3>
-
-            <div class="tech-category">
-                <h2>Programming Languages</h2>
-                <div class="tech-box">
-                    <ul>
-                        <li>C <span class="level-indicator"></span></li>
-                        <li>C++ <span class="level-indicator"></span></li>
-                        <li>C# <span class="level-indicator"></span></li>
-                        <li>SQL <span class="level-indicator"></span></li>
-                        <li>HTML <span class="level-indicator"></span></li>
-                        <li>Bash <span class="level-indicator"></span></li>
-                        <li>Assembling <span class="level-indicator"></span></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="tech-category">
-                <h2>Video Game Engines</h2>
-                <div class="tech-box">
-                    <ul>
-                        <li>Unity Engine</li>
-                        <li>Unreal Engine (Blueprints & C++)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="tech-category">
-                <h2>Tools</h2>
-                <div class="tech-box">
-                    <ul>
-                        <li>Visual Studio</li>
-                        <li>SQLite</li>
-                        <li>MariaDB</li>
-                        <li>Perforce</li>
-                        <li>GitHub</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="tech-category">
-                <h2>Languages</h2>
-                <div class="tech-box">
-                    <ul>
-                        <li>Spain <span class="level-indicator">(Native)</span></li>
-                        <li>Valenciano <span class="level-indicator">(Native)</span></li>
-                        <li>English <span class="level-indicator">(Advanced)</span></li>
-                        <li>Japanese <span class="level-indicator">(Beginner)</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Biografía -->
-    <div class="about-sections">
-        <h3 class="section-title">Biography</h3>
-
-        <div class="about-section">
-            <div class="bio-content">
-                <p class="highlight-text">Video game programmer with a passion for programming and video games.</p>
-
-                <div class="bio-section">
-                    <div class="bio-header">
-                        <h4><i class="fas fa-user-alt icon-accent"></i>Personality</h4>
-                    </div>
-                    <p class="bio-text">I am a charismatic and friendly person with leadership skills and a sense of responsibility. I enjoy socializing with colleagues and get along well with everyone..</p>
-                </div>
-
-                <div class="bio-section">
-                    <div class="bio-header">
-                        <h4><i class="fas fa-briefcase icon-accent"></i>Work Experience</h4>
-                    </div>
-                    <p>In order to pay for my studies, I worked as a waiter for three years. I have now been training as a programmer at ESAT for three years.</p>
-                </div>
-
-                <div class="bio-section">
-                    <div class="bio-header">
-                        <h4><i class="fas fa-rocket icon-accent"></i>Professional Objectives</h4>
-                    </div>
-                    <p class="bio-text">I am seeking opportunities in programming to grow professionally while continuing my academic training, always maintaining a balance between personal and professional development.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section id="contact">
-        <div class="contact-container">
-            <h2>Contact</h2>
-            <p class="highlight">Interested in working with me?</p>
-            <p>Please don't hesitate to contact me!</p>
-
-            <div class="social-links">
-                <a href="https://github.com/KuroNoKaminari" target="_blank" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/alexandre-tro-arribas-1a6b99349/" target="_blank" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://www.instagram.com/alex_tro_22/" target="_blank" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-            </div>
-
-            <div class="contact-info">
-                <p><i class="fas fa-envelope"></i> <a href="mailto:alextroa22@gmail.com">alextroa22@gmail.com</a></p>
-                <p><i class="fas fa-phone-alt"></i> <a href="tel:+34622785244">+34 622 785 244</a></p>
-                <p><i class="fas fa-map-marker-alt"></i> Alzira, Valencia</p>
-            </div>
-        </div>
-    </section>
-
-    <script>
-    /* ===================== CARRUSEL ===================== */
-    const track = document.querySelector('.carousel-track');
-    const projects = Array.from(document.querySelectorAll('.project-item'));
-    const prevBtn = document.querySelector('.carousel-nav.prev');
-    const nextBtn = document.querySelector('.carousel-nav.next');
-    const dotsWrap = document.querySelector('.carousel-dots');
-    const counter = document.querySelector('.carousel-counter');
-    const total = projects.length;
-    let currentIndex = 0;
-
-    const pad = n => String(n).padStart(2, '0');
-
-    // Crear los puntos de navegación
-    const dots = projects.map((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'carousel-dot';
-        dot.setAttribute('aria-label', `${i + 1} / ${total}`);
-        dot.addEventListener('click', () => goTo(i));
-        dotsWrap.appendChild(dot);
-        return dot;
-    });
-
-    // Para el vídeo del proyecto que deja de estar visible
-    function stopMedia(item) {
-        item.querySelectorAll('video').forEach(v => v.pause());
-        item.querySelectorAll('iframe').forEach(f => {
-            const src = f.src;
-            f.src = src;
-        });
-    }
-
-    function updateCarousel() {
-        projects.forEach((project, index) => {
-            project.classList.remove('active', 'prev', 'next');
-
-            if (index === currentIndex) {
-                project.classList.add('active');
-            } else if (index === (currentIndex - 1 + total) % total) {
-                project.classList.add('prev');
-            } else if (index === (currentIndex + 1) % total) {
-                project.classList.add('next');
-            }
-        });
-
-        dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-        counter.innerHTML = `<span>${pad(currentIndex + 1)}</span> / ${pad(total)}`;
-    }
-
-    function goTo(index) {
-        const old = currentIndex;
-        currentIndex = (index + total) % total;
-        if (old !== currentIndex) stopMedia(projects[old]);
-        updateCarousel();
-    }
-
-    nextBtn.addEventListener('click', () => goTo(currentIndex + 1));
-    prevBtn.addEventListener('click', () => goTo(currentIndex - 1));
-
-    // Clic en las tarjetas laterales (escritorio)
-    projects.forEach(p => {
-        p.addEventListener('click', () => {
-            if (p.classList.contains('prev')) goTo(currentIndex - 1);
-            else if (p.classList.contains('next')) goTo(currentIndex + 1);
-        });
-    });
-
-    // Swipe en móvil y tablet
-    let startX = 0, startY = 0;
-    track.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-    }, { passive: true });
-
-    track.addEventListener('touchend', e => {
-        const dx = e.changedTouches[0].clientX - startX;
-        const dy = e.changedTouches[0].clientY - startY;
-        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.2) {
-            goTo(currentIndex + (dx < 0 ? 1 : -1));
-        }
-    }, { passive: true });
-
-    // Flechas del teclado cuando el carrusel está en pantalla
-    document.addEventListener('keydown', e => {
-        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-        const r = track.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > window.innerHeight) return;
-        goTo(currentIndex + (e.key === 'ArrowRight' ? 1 : -1));
-    });
-
-    updateCarousel();
-
-    /* ===================== NAVBAR ===================== */
-    const navbar = document.querySelector('.navbar');
-    const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 10);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-
-    // Resaltar el enlace de la sección visible
-    const navLinks = document.querySelectorAll('.nav-links a');
-    if ('IntersectionObserver' in window) {
-        const spy = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id));
-                }
-            });
-        }, { rootMargin: '-45% 0px -50% 0px' });
-        document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
-
-        /* ===================== ANIMACIONES ===================== */
-        document.documentElement.classList.add('js-reveal');
-        const revealTargets = document.querySelectorAll(
-            '.profile-header, .itchio-profile, .section-title, .carousel, .tech-category, .highlight-text, .bio-section, .contact-container'
-        );
-        revealTargets.forEach(el => el.classList.add('reveal'));
-
-        const revealer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in');
-                    revealer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12 });
-        revealTargets.forEach(el => revealer.observe(el));
-    }
-    </script>
+<nav>
+<a href="#about">About</a>
+<a href="#featured">Featured</a>
+<a href="#projects">Projects</a>
+<a href="#skills">Skills</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<section id="about">
+<div class="photo reveal"><img src="img/MainPhoto.jpeg" alt="Alexandre Tro"></div>
+<div class="reveal">
+<p class="hello">Hi, my name is</p>
+<h1>Alexandre Tro Arribas</h1>
+<p class="role">C++ Programmer · Graphics &amp; Engine Development</p>
+<p class="lead">Game programmer graduated from ESAT. I love understanding systems at a low level: rendering pipelines, engine architecture and gameplay systems in Unreal Engine 5.</p>
+<div class="cta">
+<a href="#featured" class="btn solid"><i class="fas fa-gamepad"></i> See my work</a>
+<a href="https://kuronokaminari.itch.io/" target="_blank" class="btn"><i class="fab fa-itch-io"></i> itch.io</a>
+</div>
+</div>
+</section>
+
+<section id="featured">
+<h2 class="title reveal"><span>01.</span>Featured Projects</h2>
+<div class="featured">
+
+<article class="feat reveal">
+<div class="media"><iframe src="https://www.youtube.com/embed/2bR2OxafTjQ" title="Beerserker" loading="lazy" allowfullscreen></iframe></div>
+<div>
+<span class="num">FEATURED 01</span>
+<h3>Beerserker: The Stolen Brew</h3>
+<p>Fast-paced arcade game with a comical twist, <b>published on Steam</b>. Blinded by the taste of the legendary dwarven ale, Ragna fights through a crowded brewery to take it back from the gods.</p>
+<ul class="points">
+<li>Multi-phase boss fight system</li>
+<li>Object-pooled projectiles and spawners</li>
+<li>Gameplay systems built in C++ within a 15-person team</li>
+</ul>
+<ul class="tags"><li>C++</li><li>Unreal Engine 5</li><li>Steam</li></ul>
+<a href="https://store.steampowered.com/app/4522440/Beerserker_The_Stolen_Brew/" target="_blank" class="btn"><i class="fab fa-steam"></i> View on Steam</a>
+</div>
+</article>
+
+<article class="feat reveal">
+<div class="media"><iframe src="https://www.youtube.com/embed/y-EnX6kPlxw" title="Trodo Engine" loading="lazy" allowfullscreen></iframe></div>
+<div>
+<span class="num">FEATURED 02</span>
+<h3>Trodo Engine</h3>
+<p>A <b>custom graphics engine built from scratch</b> in C++ and OpenGL, with a Unity/Unreal-style editor: Hierarchy, Inspector, Content Browser and a real-time Viewport with gizmos.</p>
+<ul class="points">
+<li>Archetype-based ECS (DOTS-style)</li>
+<li>Deferred + Forward pipeline with PBR, shadows and HDRI skybox</li>
+<li>Node-based Material Editor inspired by UE5</li>
+<li>C# scripting via Mono with hot-reload</li>
+<li>Custom physics and native client-server networking</li>
+</ul>
+<ul class="tags"><li>C++</li><li>OpenGL</li><li>Mono</li></ul>
+</div>
+</article>
+
+<article class="feat reveal">
+<div class="media"><iframe src="https://www.youtube.com/embed/K3HpZDzAiu0" title="ARM" loading="lazy" allowfullscreen></iframe></div>
+<div>
+<img src="img/Portada_ARM_Snake_Sand.png" alt="ARM" class="cover">
+<span class="num">FEATURED 03</span>
+<h3>ARM</h3>
+<p>Project description coming soon.</p>
+<ul class="tags"><li>ARM</li></ul>
+</div>
+</article>
+
+</div>
+</section>
+
+<section id="projects">
+<h2 class="title reveal"><span>02.</span>Other Projects</h2>
+<div class="grid">
+
+<article class="card reveal">
+<div class="thumb"><img src="img/portada_spider.png" alt="Ethereal Embers" loading="lazy"></div>
+<div class="body">
+<h4>Ethereal Embers</h4>
+<p>Low-gravity dungeon crawler with a 3-phase boss AI and modular C++ plugins (menu manager and damage feedback).</p>
+<ul class="tags"><li>C++</li><li>Unreal Engine</li></ul>
+<div class="links"><a href="https://youtu.be/ikOEDquEDrQ" target="_blank"><i class="fab fa-youtube"></i> Video</a><a href="https://kuronokaminari.itch.io/ethereal-embers" target="_blank"><i class="fab fa-itch-io"></i> Play</a></div>
+</div>
+</article>
+
+<article class="card reveal">
+<div class="thumb"><img src="img/miniatura.png" alt="Procedural Forest" loading="lazy"></div>
+<div class="body">
+<h4>Procedural Forest</h4>
+<p>OpenGL procedural forest with surfaces of revolution, dynamic lighting, cel shading post-process and ImGui.</p>
+<ul class="tags"><li>C++</li><li>OpenGL</li></ul>
+<div class="links"><a href="https://youtu.be/uxjkgIhi1qc" target="_blank"><i class="fab fa-youtube"></i> Video</a></div>
+</div>
+</article>
+
+<article class="card reveal">
+<div class="thumb"><img src="img/AC_Portada.png" alt="Humanoid Locomotion via AI" loading="lazy"></div>
+<div class="body">
+<h4>Humanoid Locomotion via AI</h4>
+<p>Physics-driven humanoids trained with reinforcement learning to balance, walk and avoid obstacles.</p>
+<ul class="tags"><li>C#</li><li>Unity</li><li>ML-Agents</li></ul>
+<div class="links"><a href="https://youtu.be/vXak4CAlLq8" target="_blank"><i class="fab fa-youtube"></i> Video</a></div>
+</div>
+</article>
+
+<article class="card reveal">
+<div class="thumb"><img src="img/KurenhaTitle.png" alt="Kurenha" loading="lazy"></div>
+<div class="body">
+<h4>Kurenha</h4>
+<p>Bullet hell roguelike in a dark medieval pixel-art world. Survive endless waves and defeat two bosses.</p>
+<ul class="tags"><li>C#</li><li>Unity</li><li>Android</li></ul>
+<div class="links"><a href="img/KurenhaTrailer.mp4" target="_blank"><i class="fas fa-play"></i> Trailer</a><a href="https://play.google.com/store/apps/details?id=com.ESAT.KURENHA" target="_blank"><i class="fab fa-google-play"></i> Play</a></div>
+</div>
+</article>
+
+<article class="card reveal">
+<div class="thumb"><img src="img/ShadowSplash.png" alt="Shadow Sword" loading="lazy"></div>
+<div class="body">
+<h4>Shadow Sword</h4>
+<p>Pixel-art idle clicker with bosses, a prestige system and an upgrade shop built around an infinite loop.</p>
+<ul class="tags"><li>C#</li><li>Unity</li></ul>
+<div class="links"><a href="https://youtu.be/ZM3Py_xxY2M" target="_blank"><i class="fab fa-youtube"></i> Video</a><a href="https://kuronokaminari.itch.io/shadow-sword" target="_blank"><i class="fab fa-itch-io"></i> Play</a></div>
+</div>
+</article>
+
+<article class="card reveal">
+<div class="thumb"><img src="img/dadtitle.png" alt="Dungeons and Bubbles" loading="lazy"></div>
+<div class="body">
+<h4>Dungeons and Bubbles</h4>
+<p>Global Game Jam 2025 puzzle game made in 48 hours, where a father turns bath time into an adventure.</p>
+<ul class="tags"><li>C#</li><li>Unity</li><li>Game Jam</li></ul>
+<div class="links"><a href="https://youtu.be/iSl1OE3aOhQ" target="_blank"><i class="fab fa-youtube"></i> Video</a><a href="https://tatiananav.itch.io/dungeons-and-bubbles" target="_blank"><i class="fab fa-itch-io"></i> Play</a></div>
+</div>
+</article>
+
+<article class="card reveal">
+<div class="thumb"><img src="img/portadamuseo.png" alt="Nintendo Museum" loading="lazy"></div>
+<div class="body">
+<h4>Nintendo Museum</h4>
+<p>Interactive 3D museum with rooms dedicated to Yokoi, Miyamoto, Iwata and Sakurai.</p>
+<ul class="tags"><li>C#</li><li>Unity</li></ul>
+<div class="links"><a href="https://youtu.be/_Qg73A3XkMo" target="_blank"><i class="fab fa-youtube"></i> Video</a><a href="https://kuronokaminari.itch.io/nintendo-museum" target="_blank"><i class="fab fa-itch-io"></i> Play</a></div>
+</div>
+</article>
+
+<article class="card reveal">
+<div class="thumb"><img src="img/cdtitle.png" alt="Cube Dash" loading="lazy"></div>
+<div class="body">
+<h4>Cube Dash</h4>
+<p>Synthwave geometric infinite runner in a neon world where reflexes are the key to survival.</p>
+<ul class="tags"><li>C#</li><li>Unity</li></ul>
+<div class="links"><a href="https://youtu.be/kvZJ3OLCrmM" target="_blank"><i class="fab fa-youtube"></i> Video</a><a href="https://kuronokaminari.itch.io/cubedash" target="_blank"><i class="fab fa-itch-io"></i> Play</a></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<section id="skills">
+<h2 class="title reveal"><span>03.</span>Skills</h2>
+<div class="skills">
+<div class="box reveal"><h4><i class="fas fa-code"></i>Languages</h4><ul class="tags"><li>C++</li><li>C</li><li>C#</li><li>SQL</li><li>HTML</li><li>Bash</li><li>Assembly</li></ul></div>
+<div class="box reveal"><h4><i class="fas fa-cubes"></i>Engines &amp; Graphics</h4><ul class="tags"><li>Unreal Engine (C++ &amp; Blueprints)</li><li>Unity</li><li>OpenGL</li></ul></div>
+<div class="box reveal"><h4><i class="fas fa-screwdriver-wrench"></i>Tools</h4><ul class="tags"><li>Visual Studio</li><li>GitHub</li><li>Perforce</li><li>SQLite</li><li>MariaDB</li></ul></div>
+<div class="box reveal"><h4><i class="fas fa-language"></i>Spoken</h4><ul class="tags"><li>Spanish<small>Native</small></li><li>Valencian<small>Native</small></li><li>English<small>Advanced</small></li><li>Japanese<small>Beginner</small></li></ul></div>
+</div>
+</section>
+
+<section id="bio">
+<h2 class="title reveal"><span>04.</span>Biography</h2>
+<div class="bio">
+<div class="box reveal"><h4><i class="fas fa-user"></i>Personality</h4><p>Charismatic and friendly, with leadership skills and a strong sense of responsibility. I enjoy working with colleagues and get along well with everyone.</p></div>
+<div class="box reveal"><h4><i class="fas fa-graduation-cap"></i>Background</h4><p>HND in Game Programming at ESAT (2026). Before that, I worked as a waiter for three years to pay for my studies.</p></div>
+<div class="box reveal"><h4><i class="fas fa-rocket"></i>Goals</h4><p>Looking for programming opportunities where I can keep growing, especially in engine, graphics and gameplay programming.</p></div>
+</div>
+</section>
+
+<section id="contact">
+<div class="contact reveal">
+<h2>Get in touch</h2>
+<p>Interested in working with me? Don't hesitate to contact me!</p>
+<div class="social">
+<a href="https://github.com/KuroNoKaminari" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+<a href="https://www.linkedin.com/in/alexandre-tro-arribas-1a6b99349/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+<a href="https://www.instagram.com/alex_tro_22/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+</div>
+<div class="info">
+<a href="mailto:alextroa22@gmail.com"><i class="fas fa-envelope"></i>alextroa22@gmail.com</a>
+<a href="tel:+34622785244"><i class="fas fa-phone"></i>+34 622 785 244</a>
+<span><i class="fas fa-location-dot"></i>Alzira, Valencia</span>
+</div>
+<a href="mailto:alextroa22@gmail.com" class="btn solid" style="margin-top:2rem"><i class="fas fa-paper-plane"></i> Say hello</a>
+</div>
+</section>
+
+<footer>Designed &amp; built by Alexandre Tro</footer>
+
+<script>
+const nav=document.querySelector('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>10),{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
 </body>
 </html>
